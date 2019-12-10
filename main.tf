@@ -1,75 +1,67 @@
-locals {
-  ## Workaround to solve this problem https://github.com/hashicorp/terraform/issues/11210
-  source_documents = concat(["null"], var.source_documents)
-
-  policies = [
-    length(local.source_documents) > 1 ? element(local.source_documents, 1) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 2 ? element(local.source_documents, 2) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 3 ? element(local.source_documents, 3) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 4 ? element(local.source_documents, 4) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 5 ? element(local.source_documents, 5) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 6 ? element(local.source_documents, 6) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 7 ? element(local.source_documents, 7) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 8 ? element(local.source_documents, 8) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 9 ? element(local.source_documents, 9) : data.aws_iam_policy_document.empty.json,
-    length(local.source_documents) > 10 ? element(local.source_documents, 10) : data.aws_iam_policy_document.empty.json,
-  ]
-}
-
 data "aws_iam_policy_document" "empty" {
 }
 
 data "aws_iam_policy_document" "zero" {
+  count         = length(var.source_documents) > 0 ? 1 : 0
   source_json   = data.aws_iam_policy_document.empty.json
-  override_json = element(local.policies, 0)
+  override_json = var.source_documents[0]
 }
 
 data "aws_iam_policy_document" "one" {
-  source_json   = data.aws_iam_policy_document.zero.json
-  override_json = element(local.policies, 1)
+  count         = length(var.source_documents) > 1 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.zero.*.json
+  override_json = var.source_documents[1]
 }
 
 data "aws_iam_policy_document" "two" {
-  source_json   = data.aws_iam_policy_document.one.json
-  override_json = element(local.policies, 2)
+  count         = length(var.source_documents) > 2 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.one.*.json
+  override_json = var.source_documents[2]
 }
 
 data "aws_iam_policy_document" "three" {
-  source_json   = data.aws_iam_policy_document.two.json
-  override_json = element(local.policies, 3)
+  count         = length(var.source_documents) > 3 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.two.*.json
+  override_json = var.source_documents[3]
 }
 
 data "aws_iam_policy_document" "four" {
-  source_json   = data.aws_iam_policy_document.three.json
-  override_json = element(local.policies, 4)
+  count         = length(var.source_documents) > 4 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.three.*.json
+  override_json = var.source_documents[4]
 }
 
 data "aws_iam_policy_document" "five" {
-  source_json   = data.aws_iam_policy_document.four.json
-  override_json = element(local.policies, 5)
+  count         = length(var.source_documents) > 5 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.four.*.json
+  override_json = var.source_documents[5]
 }
 
 data "aws_iam_policy_document" "six" {
-  source_json   = data.aws_iam_policy_document.five.json
-  override_json = element(local.policies, 6)
+  count         = length(var.source_documents) > 6 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.five.*.json
+  override_json = var.source_documents[6]
 }
 
 data "aws_iam_policy_document" "seven" {
-  source_json   = data.aws_iam_policy_document.six.json
-  override_json = element(local.policies, 7)
+  count         = length(var.source_documents) > 7 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.six.*.json
+  override_json = var.source_documents[7]
 }
 
 data "aws_iam_policy_document" "eight" {
-  source_json   = data.aws_iam_policy_document.seven.json
-  override_json = element(local.policies, 8)
+  count         = length(var.source_documents) > 8 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.seven.*.json
+  override_json = var.source_documents[8]
 }
 
 data "aws_iam_policy_document" "nine" {
-  source_json   = data.aws_iam_policy_document.eight.json
-  override_json = element(local.policies, 9)
+  count         = length(var.source_documents) > 9 ? 1 : 0
+  source_json   = data.aws_iam_policy_document.eight.*.json
+  override_json = var.source_documents[9]
 }
 
 data "aws_iam_policy_document" "default" {
-  source_json = data.aws_iam_policy_document.nine.json
+  source_json = join("", data.aws_iam_policy_document.nine.*.json)
 }
 
