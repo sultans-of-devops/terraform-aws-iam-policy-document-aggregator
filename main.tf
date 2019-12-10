@@ -2,66 +2,66 @@ data "aws_iam_policy_document" "empty" {
 }
 
 data "aws_iam_policy_document" "zero" {
-  count         = length(var.source_documents) > 0 ? 1 : 0
+  count         = 1
   source_json   = data.aws_iam_policy_document.empty.json
-  override_json = var.source_documents[0]
+  override_json = length(var.source_documents) > 0 ? var.source_documents[0] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "one" {
-  count         = length(var.source_documents) > 1 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.zero.*.json
-  override_json = var.source_documents[1]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.zero[0].json
+  override_json = length(var.source_documents) > 1 ? var.source_documents[1] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "two" {
-  count         = length(var.source_documents) > 2 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.one.*.json
-  override_json = var.source_documents[2]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.one[0].json
+  override_json = length(var.source_documents) > 2 ? var.source_documents[2] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "three" {
-  count         = length(var.source_documents) > 3 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.two.*.json
-  override_json = var.source_documents[3]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.two[0].json
+  override_json = length(var.source_documents) > 3 ? var.source_documents[3] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "four" {
-  count         = length(var.source_documents) > 4 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.three.*.json
-  override_json = var.source_documents[4]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.three[0].json
+  override_json = length(var.source_documents) > 4 ? var.source_documents[4] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "five" {
-  count         = length(var.source_documents) > 5 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.four.*.json
-  override_json = var.source_documents[5]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.four[0].json
+  override_json = length(var.source_documents) > 5 ? var.source_documents[5] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "six" {
-  count         = length(var.source_documents) > 6 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.five.*.json
-  override_json = var.source_documents[6]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.five[0].json
+  override_json = length(var.source_documents) > 6 ? var.source_documents[6] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "seven" {
-  count         = length(var.source_documents) > 7 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.six.*.json
-  override_json = var.source_documents[7]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.six[0].json
+  override_json = length(var.source_documents) > 7 ? var.source_documents[7] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "eight" {
-  count         = length(var.source_documents) > 8 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.seven.*.json
-  override_json = var.source_documents[8]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.seven[0].json
+  override_json = length(var.source_documents) > 8 ? var.source_documents[8] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "nine" {
-  count         = length(var.source_documents) > 9 ? 1 : 0
-  source_json   = data.aws_iam_policy_document.eight.*.json
-  override_json = var.source_documents[9]
+  count         = 1
+  source_json   = data.aws_iam_policy_document.eight[0].json
+  override_json = length(var.source_documents) > 9 ? var.source_documents[9] : jsonencode({})
 }
 
 data "aws_iam_policy_document" "default" {
-  source_json = join("", data.aws_iam_policy_document.nine.*.json)
+  source_json = data.aws_iam_policy_document.nine[0].json
 }
 
